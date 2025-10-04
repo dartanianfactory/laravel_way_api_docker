@@ -12,7 +12,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->int('status')->default(1);
+            $table->integer('status')
+                  ->default(1)
+                  ->comment('0 - canceled / 1 - pending / 2 - done / 3 - lost');
             $table->timestamps();
         });
     }

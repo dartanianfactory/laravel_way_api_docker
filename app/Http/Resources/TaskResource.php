@@ -12,8 +12,8 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'status' => $this->is_completed ? 'completed' : 'pending',
             'description' => $this->description,
+            'status' => $this->status->value,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];

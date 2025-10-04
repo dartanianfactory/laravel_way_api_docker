@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -16,15 +18,11 @@ class StoreTaskRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'is_completed' => 'sometimes|boolean',
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'title.required' => 'Название задачи обязательно',
-            'title.max' => 'Название не должно превышать 255 символов',
+            'status' => [
+                'sometimes',
+                'integer',
+                Rule::in(array_column(TaskStatus::cases(), 'value'))
+            ],
         ];
     }
 }

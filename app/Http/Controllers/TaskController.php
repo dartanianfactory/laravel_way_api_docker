@@ -2,22 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStatus;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use App\Http\Resources\TaskResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return TaskResource::collection(Task::all());
+        $order = $request->get('order', 'DESC');
+        $order = in_array(strtoupper($order), ['ASC', 'DESC']) ? strtoupper($order) : 'DESC';
+        
+        $tasks = Task::orderBy('created_at', $order)->get();
+        
+        return TaskResource::collection($tasks);
     }
 
     public function store(StoreTaskRequest $request): TaskResource
     {
-        $task = Task::create($request->validated());
+        $validated = $request->validated();
+        
+        if (!isset($validated['status'])) {
+            $validated['status'] = TaskStatus::PENDING->value;
+        }
+        
+        $task = Task::create($validated);
         return new TaskResource($task);
     }
 
