@@ -165,7 +165,7 @@
                         </div>
                     </div>
                     
-                    <div class="grid grid-rows-2 grid-cols-3 gap-y-[8px] justify-end">
+                    <div class="grid grid-rows-2 grid-cols-3 gap-[8px] justify-end">
                         ${!isDone ? `
                             <button onclick="updateTaskStatus(${task.id}, ${STATUS.DONE})" 
                                     class="bg-neon-green hover:bg-neon-green/80 text-dark font-medium px-4 py-2 rounded-lg 
